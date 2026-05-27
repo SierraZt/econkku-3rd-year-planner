@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EconKKU 3rd Year Planner</title>
+
+<style>
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f4f4;
+    margin:20px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.section{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:12px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    text-align:center;
+}
+
+.notice{
+    text-align:center;
+    font-size:13px;
+    color:#777;
+    margin-top:-10px;
+    margin-bottom:20px;
+}
+
+select{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #ccc;
+    padding:10px;
+    text-align:center;
+    vertical-align:top;
+    height:70px;
+}
+
+.course-box{
+    margin:4px 0;
+    padding:6px;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.Dev{background:#f39c12;color:white;}
+.AI{background:#3498db;color:white;}
+.Labor{background:#e74c3c;color:white;}
+.Nat{background:#27ae60;color:white;}
+.Inter{background:#9b59b6;color:white;}
+.Fin{background:#f1c40f;color:black;}
+.Logis{background:#00bcd4;color:white;}
+
+.conflict{
+    background:#ffe5e5;
+    border-left:5px solid red;
+    padding:10px;
+    border-radius:6px;
+    margin-top:8px;
+}
+
+.safe{
+    background:#e8fff0;
+    border-left:5px solid green;
+    padding:10px;
+    border-radius:6px;
+}
+
+.hidden{
+    display:none;
+}
+
+.credit{
+    position:fixed;
+    right:15px;
+    bottom:10px;
+    font-size:12px;
+    color:#777;
+}
+
+@media(max-width:768px){
+
+    body{
+        margin:10px;
+    }
+
+    table{
+        font-size:12px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="section">
+
+<h1>EconKKU 3rd Year Planner</h1>
+
+<div class="notice">
+This planner may still contain bugs. Please double-check your schedule manually before registration.
+</div>
+
+<h2>Registration Condition</h2>
+
+<select id="condition">
+
+<option value="regular">
+Regular Track (2 Modules + 5/6 Electives)
+</option>
+
+<option value="coop">
+Co-op Track (2 Modules + 2 Electives)
+</option>
+
+</select>
+
+<h2 id="module1Title">
+Select Module 1
+</h2>
+
+<select id="module1"></select>
+
+<h2 id="module2Title">
+Select Module 2
+</h2>
+
+<select id="module2"></select>
+
+<h2>Module Conflict Status</h2>
+
+<div id="topConflictBox" class="safe">
+No conflicts detected.
+</div>
+
+<div id="electiveArea">
+
+<!-- REGULAR -->
+<div id="regularElectives">
+
+<h2>1st Semester Electives</h2>
+
+<select class="regular-sem1"></select>
+<select class="regular-sem1"></select>
+<select class="regular-sem1"></select>
+
+<h2>2nd Semester Electives</h2>
+
+<select class="regular-sem2"></select>
+<select class="regular-sem2"></select>
+<select class="regular-sem2 optional-elective"></select>
+
+</div>
+
+<!-- COOP -->
+<div id="coopElectives" class="hidden">
+
+<h2>1st Semester Elective</h2>
+
+<select id="coop-sem1"></select>
+
+<h2>2nd Semester Elective</h2>
+
+<select id="coop-sem2"></select>
+
+</div>
+
+</div>
+
+<h2>Detailed Conflict Detection</h2>
+
+<div id="bottomConflictBox" class="safe">
+No conflicts detected.
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>First Semester</h2>
+
+<table id="semester1">
+
+<tr>
+<th>Day</th>
+<th>AM</th>
+<th>PM</th>
+</tr>
+
+</table>
+
+</div>
+
+<div class="section">
+
+<h2>Second Semester</h2>
+
+<table id="semester2">
+
+<tr>
+<th>Day</th>
+<th>AM</th>
+<th>PM</th>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="credit">
+Developed by Zent1m & ChatGPT
+</div>
+
+<script>
+
+const days=[
+"Monday",
+"Tuesday",
+"Wednesday",
+"Thursday",
+"Friday",
+"Saturday",
+"Sunday"
+];
+
+const modules={
+
+Dev:{
+color:"Dev",
+semester:2,
+courses:[
+{short:"Fiscal Policy",day:"Friday",time:"PM"},
+{short:"Community Development",day:"Friday",time:"AM"},
+{short:"Public Policy",day:"Thursday",time:"AM"}
+]
+},
+
+AI:{
+color:"AI",
+courses:[
+{short:"Data Analytics",day:"Monday",time:"AM",semester:1},
+{short:"Machine Learning",day:"Friday",time:"AM",semester:2},
+{short:"AI ML",day:"Thursday",time:"AM",semester:2}
+]
+},
+
+Labor:{
+color:"Labor",
+semester:1,
+courses:[
+{short:"Wages",day:"Thursday",time:"PM"},
+{short:"Employee Training",day:"Friday",time:"PM"},
+{short:"Household",day:"Friday",time:"AM"}
+]
+},
+
+Nat:{
+color:"Nat",
+semester:1,
+courses:[
+{short:"Energy",day:"Monday",time:"PM"},
+{short:"Sustainability",day:"Monday",time:"AM"},
+{short:"Natural Resources",day:"Tuesday",time:"AM"}
+]
+},
+
+Inter:{
+color:"Inter",
+semester:2,
+courses:[
+{short:"Inter Trade",day:"Tuesday",time:"AM"},
+{short:"Global Business",day:"Monday",time:"AM"},
+{short:"Inter Monetary",day:"Tuesday",time:"PM"}
+]
+},
+
+Fin:{
+color:"Fin",
+semester:1,
+courses:[
+{short:"Corporate Fin",day:"Friday",time:"AM"},
+{short:"Investment",day:"Saturday",time:"AM"},
+{short:"Monetary&Policy",day:"Friday",time:"PM"}
+]
+},
+
+Logis:{
+color:"Logis",
+semester:1,
+courses:[
+{short:"Supply Chain",day:"Wednesday",time:"AM"},
+{short:"Applied Data Analytics",day:"Tuesday",time:"PM"},
+{short:"BI",day:"Wednesday",time:"PM"}
+]
+}
+
+};
+
+const module1=document.getElementById("module1");
+const module2=document.getElementById("module2");
+const condition=document.getElementById("condition");
+
+const regularElectives=
+document.getElementById("regularElectives");
+
+const coopElectives=
+document.getElementById("coopElectives");
+
+function createTables(){
+
+["semester1","semester2"]
+.forEach(id=>{
+
+const table=document.getElementById(id);
+
+days.forEach(day=>{
+
+const row=document.createElement("tr");
+
+row.innerHTML=`
+<td>${day}</td>
+<td id="${id}-${day}-AM"></td>
+<td id="${id}-${day}-PM"></td>
+`;
+
+table.appendChild(row);
+
+});
+
+});
+
+}
+
+createTables();
+
+function toggleElectiveMode(){
+
+if(condition.value==="coop"){
+
+regularElectives.classList.add("hidden");
+coopElectives.classList.remove("hidden");
+
+}else{
+
+regularElectives.classList.remove("hidden");
+coopElectives.classList.add("hidden");
+
+}
+
+}
+
+function getSemester(module){
+
+return module.semester ||
+module.courses[0].semester;
+
+}
+
+function updateTitles(){
+
+if(condition.value==="coop"){
+
+document.getElementById("module1Title")
+.textContent="1st Semester Module";
+
+document.getElementById("module2Title")
+.textContent="2nd Semester Module";
+
+}else{
+
+document.getElementById("module1Title")
+.textContent="Select Module 1";
+
+document.getElementById("module2Title")
+.textContent="Select Module 2";
+
+}
+
+}
+
+function populateModule1(){
+
+module1.innerHTML=
+`<option value="">Choose Module 1</option>`;
+
+Object.keys(modules)
+.forEach(name=>{
+
+let semester=getSemester(modules[name]);
+
+if(
+condition.value==="coop"
+&&
+semester!==1
+){
+return;
+}
+
+let option=document.createElement("option");
+
+option.value=name;
+option.textContent=name;
+
+module1.appendChild(option);
+
+});
+
+}
+
+function populateModule2(){
+
+let current=module2.value;
+
+module2.innerHTML=
+`<option value="">Choose Module 2</option>`;
+
+Object.keys(modules)
+.forEach(name=>{
+
+if(name===module1.value) return;
+
+let semester=getSemester(modules[name]);
+
+if(
+condition.value==="coop"
+&&
+semester!==2
+){
+return;
+}
+
+let option=document.createElement("option");
+
+option.value=name;
+option.textContent=name;
+
+module2.appendChild(option);
+
+});
+
+module2.value=current;
+
+}
+
+function getAllElectives(){
+
+if(condition.value==="coop"){
+
+return [
+document.getElementById("coop-sem1"),
+document.getElementById("coop-sem2")
+];
+
+}
+
+return [
+
+...document.querySelectorAll(".regular-sem1"),
+...document.querySelectorAll(".regular-sem2")
+
+];
+
+}
+
+function getSelectedElectives(){
+
+return getAllElectives()
+.map(select=>select.value)
+.filter(v=>v!=="");
+
+}
+
+function countElectiveModules(){
+
+let counts={};
+
+getSelectedElectives()
+.forEach(value=>{
+
+let module=value.split(":")[0];
+
+counts[module]=(counts[module]||0)+1;
+
+});
+
+return counts;
+
+}
+
+function fillSelect(
+select,
+options,
+current
+){
+
+let placeholder=
+select.classList.contains(
+"optional-elective"
+)
+?
+"Choose Elective (Optional)"
+:
+"Choose Elective";
+
+select.innerHTML=
+`<option value="">${placeholder}</option>`;
+
+options.forEach(text=>{
+
+let option=document.createElement("option");
+
+option.value=text;
+option.textContent=text;
+
+select.appendChild(option);
+
+});
+
+select.value=current;
+
+}
+
+function updateElectives(){
+
+const selectedModules=[
+module1.value,
+module2.value
+];
+
+const selectedElectives=
+getSelectedElectives();
+
+const moduleCounts=
+countElectiveModules();
+
+let sem1=[];
+let sem2=[];
+
+Object.keys(modules)
+.forEach(moduleName=>{
+
+if(
+selectedModules.includes(moduleName)
+) return;
+
+let module=modules[moduleName];
+
+module.courses.forEach(course=>{
+
+let text=
+`${moduleName}: ${course.short}`;
+
+let semester=
+course.semester ||
+module.semester;
+
+let alreadySelected=
+selectedElectives.includes(text);
+
+if(
+moduleCounts[moduleName] >= 2
+&&
+!alreadySelected
+){
+return;
+}
+
+if(semester===1){
+
+sem1.push(text);
+
+}else{
+
+sem2.push(text);
+
+}
+
+});
+
+});
+
+getAllElectives()
+.forEach(select=>{
+
+let current=select.value;
+
+let options=
+select.id==="coop-sem1"
+||
+select.classList.contains("regular-sem1")
+?
+sem1
+:
+sem2;
+
+let filtered=
+options.filter(option=>{
+
+return (
+!selectedElectives.includes(option)
+||
+option===current
+);
+
+});
+
+fillSelect(
+select,
+filtered,
+current
+);
+
+});
+
+}
+
+function detectConflicts(){
+
+let all=[];
+
+[module1.value,module2.value]
+.forEach(moduleName=>{
+
+if(!moduleName) return;
+
+let module=modules[moduleName];
+
+module.courses.forEach(course=>{
+
+let semester=
+course.semester ||
+module.semester;
+
+all.push({
+name:`${moduleName}: ${course.short}`,
+semester,
+day:course.day,
+time:course.time
+});
+
+});
+
+});
+
+getSelectedElectives()
+.forEach(value=>{
+
+let moduleName=
+value.split(":")[0];
+
+let short=
+value.split(": ")[1];
+
+let module=
+modules[moduleName];
+
+let course=
+module.courses.find(
+c=>c.short===short
+);
+
+let semester=
+course.semester ||
+module.semester;
+
+all.push({
+name:value,
+semester,
+day:course.day,
+time:course.time
+});
+
+});
+
+let conflicts=[];
+let map={};
+
+all.forEach(course=>{
+
+let key=
+`${course.semester}-${course.day}-${course.time}`;
+
+if(map[key]){
+
+conflicts.push(
+`${map[key]}
+overlaps with
+${course.name}
+(${course.day}
+${course.time}
+Semester ${course.semester})`
+);
+
+}else{
+
+map[key]=course.name;
+
+}
+
+});
+
+return conflicts;
+
+}
+
+function updateConflictUI(){
+
+const conflicts=
+detectConflicts();
+
+const top=
+document.getElementById("topConflictBox");
+
+const bottom=
+document.getElementById("bottomConflictBox");
+
+if(conflicts.length===0){
+
+top.className="safe";
+bottom.className="safe";
+
+top.innerHTML=
+"No conflicts detected.";
+
+bottom.innerHTML=
+"No conflicts detected.";
+
+}else{
+
+let html="";
+
+conflicts.forEach(c=>{
+
+html+=`
+<div class="conflict">
+${c}
+</div>
+`;
+
+});
+
+top.className="";
+bottom.className="";
+
+top.innerHTML=html;
+bottom.innerHTML=html;
+
+}
+
+}
+
+function clearTables(){
+
+document
+.querySelectorAll("td")
+.forEach(td=>{
+
+if(td.id){
+
+td.innerHTML="";
+
+}
+
+});
+
+}
+
+function addCourse(
+semester,
+day,
+time,
+text,
+color
+){
+
+let tableId=
+semester===1
+?
+"semester1"
+:
+"semester2";
+
+let cell=
+document.getElementById(
+`${tableId}-${day}-${time}`
+);
+
+cell.innerHTML+=`
+<div class="course-box ${color}">
+${text}
+</div>
+`;
+
+}
+
+function updateTables(){
+
+clearTables();
+
+[module1.value,module2.value]
+.forEach(moduleName=>{
+
+if(!moduleName) return;
+
+let module=modules[moduleName];
+
+module.courses.forEach(course=>{
+
+let semester=
+course.semester ||
+module.semester;
+
+addCourse(
+semester,
+course.day,
+course.time,
+`${moduleName}: ${course.short}`,
+module.color
+);
+
+});
+
+});
+
+getSelectedElectives()
+.forEach(value=>{
+
+let moduleName=
+value.split(":")[0];
+
+let short=
+value.split(": ")[1];
+
+let module=
+modules[moduleName];
+
+let course=
+module.courses.find(
+c=>c.short===short
+);
+
+let semester=
+course.semester ||
+module.semester;
+
+addCourse(
+semester,
+course.day,
+course.time,
+value,
+module.color
+);
+
+});
+
+}
+
+function updateAll(){
+
+toggleElectiveMode();
+
+updateTitles();
+
+populateModule1();
+populateModule2();
+
+updateElectives();
+updateConflictUI();
+updateTables();
+
+}
+
+condition.addEventListener(
+"change",
+updateAll
+);
+
+module1.addEventListener(
+"change",
+()=>{
+
+populateModule2();
+
+updateElectives();
+updateConflictUI();
+updateTables();
+
+});
+
+module2.addEventListener(
+"change",
+()=>{
+
+updateElectives();
+updateConflictUI();
+updateTables();
+
+});
+
+document.addEventListener(
+"change",
+(event)=>{
+
+if(
+event.target.tagName==="SELECT"
+){
+
+updateElectives();
+updateConflictUI();
+updateTables();
+
+}
+
+});
+
+updateAll();
+
+</script>
+
+</body>
+</html>
