@@ -39,6 +39,7 @@ h1,h2{
     color:#777;
     margin-top:-10px;
     margin-bottom:20px;
+    line-height:1.6;
 }
 
 select{
@@ -47,6 +48,7 @@ select{
     margin-bottom:15px;
     border-radius:8px;
     border:1px solid #ccc;
+    font-size:14px;
 }
 
 table{
@@ -77,6 +79,7 @@ th,td{
 .Inter{background:#9b59b6;color:white;}
 .Fin{background:#f1c40f;color:black;}
 .Logis{background:#00bcd4;color:white;}
+.BS{background:#795548;color:white;}
 
 .conflict{
     background:#ffe5e5;
@@ -130,7 +133,10 @@ th,td{
 <h1>EconKKU 3rd Year Planner</h1>
 
 <div class="notice">
-This planner may still contain bugs. Please double-check your schedule manually before registration.
+This planner may still contain bugs. Please double-check your schedule manually before registration.<br>
+This planner does not include required International Program courses and Research & Seminar courses.<br>
+EC113043 Tourism Economics is not included because the exact class schedule is currently unknown. It is only confirmed to be offered in the second semester.<br>
+We are not responsible for any registration errors or conflicts.
 </div>
 
 <h2>Registration Condition</h2>
@@ -142,7 +148,7 @@ Regular Track (2 Modules + 5/6 Electives)
 </option>
 
 <option value="coop">
-Co-op Track (2 Modules + 2 Electives)
+Co-op Track (2 Modules + 2-4 Electives)
 </option>
 
 </select>
@@ -174,7 +180,7 @@ No conflicts detected.
 
 <select class="regular-sem1"></select>
 <select class="regular-sem1"></select>
-<select class="regular-sem1"></select>
+<select class="regular-sem1 optional-elective"></select>
 
 <h2>2nd Semester Electives</h2>
 
@@ -187,13 +193,19 @@ No conflicts detected.
 <!-- COOP -->
 <div id="coopElectives" class="hidden">
 
-<h2>1st Semester Elective</h2>
+<h2>1st Semester Electives</h2>
 
-<select id="coop-sem1"></select>
+<select class="coop-sem1"></select>
+<select class="coop-sem1 optional-elective"></select>
+<select class="coop-sem1 optional-elective"></select>
+<select class="coop-sem1 optional-elective"></select>
 
-<h2>2nd Semester Elective</h2>
+<h2>2nd Semester Electives</h2>
 
-<select id="coop-sem2"></select>
+<select class="coop-sem2"></select>
+<select class="coop-sem2 optional-elective"></select>
+<select class="coop-sem2 optional-elective"></select>
+<select class="coop-sem2 optional-elective"></select>
 
 </div>
 
@@ -263,18 +275,51 @@ Dev:{
 color:"Dev",
 semester:2,
 courses:[
-{short:"Fiscal Policy",day:"Friday",time:"PM"},
-{short:"Community Development",day:"Friday",time:"AM"},
-{short:"Public Policy",day:"Thursday",time:"AM"}
+{
+code:"EC113028",
+short:"Fiscal Policy",
+day:"Friday",
+time:"PM"
+},
+{
+code:"EC113029",
+short:"Community Development",
+day:"Friday",
+time:"AM"
+},
+{
+code:"EC113030",
+short:"Public Policy",
+day:"Thursday",
+time:"AM"
+}
 ]
 },
 
 AI:{
 color:"AI",
 courses:[
-{short:"Data Analytics",day:"Monday",time:"AM",semester:1},
-{short:"Machine Learning",day:"Friday",time:"AM",semester:2},
-{short:"AI ML",day:"Thursday",time:"AM",semester:2}
+{
+code:"EC113064",
+short:"Data Analytics",
+day:"Thursday",
+time:"PM",
+semester:1
+},
+{
+code:"EC113065",
+short:"Machine Learning",
+day:"Friday",
+time:"AM",
+semester:2
+},
+{
+code:"EC113066",
+short:"AI ML",
+day:"Thursday",
+time:"AM",
+semester:2
+}
 ]
 },
 
@@ -282,9 +327,24 @@ Labor:{
 color:"Labor",
 semester:1,
 courses:[
-{short:"Wages",day:"Thursday",time:"PM"},
-{short:"Employee Training",day:"Friday",time:"PM"},
-{short:"Household",day:"Friday",time:"AM"}
+{
+code:"EC113022",
+short:"Wages",
+day:"Monday",
+time:"AM"
+},
+{
+code:"EC113023",
+short:"Employee Training",
+day:"Friday",
+time:"PM"
+},
+{
+code:"EC113024",
+short:"Household",
+day:"Friday",
+time:"AM"
+}
 ]
 },
 
@@ -292,9 +352,24 @@ Nat:{
 color:"Nat",
 semester:1,
 courses:[
-{short:"Energy",day:"Monday",time:"PM"},
-{short:"Sustainability",day:"Monday",time:"AM"},
-{short:"Natural Resources",day:"Tuesday",time:"AM"}
+{
+code:"EC113031",
+short:"Energy",
+day:"Monday",
+time:"PM"
+},
+{
+code:"EC113032",
+short:"Sustainability",
+day:"Thursday",
+time:"PM"
+},
+{
+code:"EC113033",
+short:"Natural Resources",
+day:"Tuesday",
+time:"AM"
+}
 ]
 },
 
@@ -302,9 +377,24 @@ Inter:{
 color:"Inter",
 semester:2,
 courses:[
-{short:"Inter Trade",day:"Tuesday",time:"AM"},
-{short:"Global Business",day:"Monday",time:"AM"},
-{short:"Inter Monetary",day:"Tuesday",time:"PM"}
+{
+code:"EC113025",
+short:"Inter Trade",
+day:"Tuesday",
+time:"AM"
+},
+{
+code:"EC113026",
+short:"Global Business",
+day:"Monday",
+time:"AM"
+},
+{
+code:"EC113027",
+short:"Inter Monetary",
+day:"Tuesday",
+time:"PM"
+}
 ]
 },
 
@@ -312,9 +402,24 @@ Fin:{
 color:"Fin",
 semester:1,
 courses:[
-{short:"Corporate Fin",day:"Friday",time:"AM"},
-{short:"Investment",day:"Saturday",time:"AM"},
-{short:"Monetary&Policy",day:"Friday",time:"PM"}
+{
+code:"EC113034",
+short:"Corporate Fin",
+day:"Friday",
+time:"AM"
+},
+{
+code:"EC113035",
+short:"Investment",
+day:"Saturday",
+time:"AM"
+},
+{
+code:"EC113036",
+short:"Monetary&Policy",
+day:"Friday",
+time:"PM"
+}
 ]
 },
 
@@ -322,9 +427,37 @@ Logis:{
 color:"Logis",
 semester:1,
 courses:[
-{short:"Supply Chain",day:"Wednesday",time:"AM"},
-{short:"Applied Data Analytics",day:"Tuesday",time:"PM"},
-{short:"BI",day:"Wednesday",time:"PM"}
+{
+code:"EC113020",
+short:"Supply Chain",
+day:"Tuesday",
+time:"PM"
+},
+{
+code:"EC113019",
+short:"Applied Data Analytics",
+day:"Wednesday",
+time:"AM"
+},
+{
+code:"EC113021",
+short:"BI",
+day:"Wednesday",
+time:"PM"
+}
+]
+},
+
+BS:{
+color:"BS",
+semester:1,
+courses:[
+{
+code:"BS931111",
+short:"Marketing",
+day:"Tuesday",
+time:"AM"
+}
 ]
 }
 
@@ -420,6 +553,8 @@ module1.innerHTML=
 Object.keys(modules)
 .forEach(name=>{
 
+if(name==="BS") return;
+
 let semester=getSemester(modules[name]);
 
 if(
@@ -451,6 +586,8 @@ module2.innerHTML=
 Object.keys(modules)
 .forEach(name=>{
 
+if(name==="BS") return;
+
 if(name===module1.value) return;
 
 let semester=getSemester(modules[name]);
@@ -481,8 +618,10 @@ function getAllElectives(){
 if(condition.value==="coop"){
 
 return [
-document.getElementById("coop-sem1"),
-document.getElementById("coop-sem2")
+
+...document.querySelectorAll(".coop-sem1"),
+...document.querySelectorAll(".coop-sem2")
+
 ];
 
 }
@@ -582,7 +721,7 @@ let module=modules[moduleName];
 module.courses.forEach(course=>{
 
 let text=
-`${moduleName}: ${course.short}`;
+`${moduleName}: ${course.code} ${course.short}`;
 
 let semester=
 course.semester ||
@@ -619,9 +758,9 @@ getAllElectives()
 let current=select.value;
 
 let options=
-select.id==="coop-sem1"
-||
 select.classList.contains("regular-sem1")
+||
+select.classList.contains("coop-sem1")
 ?
 sem1
 :
@@ -666,7 +805,7 @@ course.semester ||
 module.semester;
 
 all.push({
-name:`${moduleName}: ${course.short}`,
+name:`${moduleName}: ${course.code} ${course.short}`,
 semester,
 day:course.day,
 time:course.time
@@ -682,15 +821,15 @@ getSelectedElectives()
 let moduleName=
 value.split(":")[0];
 
-let short=
-value.split(": ")[1];
+let courseCode=
+value.split(": ")[1].split(" ")[0];
 
 let module=
 modules[moduleName];
 
 let course=
 module.courses.find(
-c=>c.short===short
+c=>c.code===courseCode
 );
 
 let semester=
@@ -848,7 +987,7 @@ addCourse(
 semester,
 course.day,
 course.time,
-`${moduleName}: ${course.short}`,
+`${moduleName}: ${course.code} ${course.short}`,
 module.color
 );
 
@@ -862,15 +1001,15 @@ getSelectedElectives()
 let moduleName=
 value.split(":")[0];
 
-let short=
-value.split(": ")[1];
+let courseCode=
+value.split(": ")[1].split(" ")[0];
 
 let module=
 modules[moduleName];
 
 let course=
 module.courses.find(
-c=>c.short===short
+c=>c.code===courseCode
 );
 
 let semester=
